@@ -39,6 +39,15 @@ const app = express();
 
 app.use("/admin", AdminMiddleWare);
 
+app.use("/",(error,res,req)=>{
+  try{
+  throw new error('Sever down')
+  }
+  catch(err){
+    res.send('internal error dont worry')
+  }
+})
+
 app.post("/admin/add", (req, res) => {
   res.send("Admin added data Sucessfully");
 });
@@ -50,5 +59,11 @@ app.delete("/admin/delete", (req, res) => {
 app.use("/user",UserMiddleWare,(req,res)=>{
   res.send("user authorized sucessfully ")
 });
+
+app.use('/',(err,req,res,next)=>{
+  if(err){
+   res.status(501).send('dont worry its an internal Server error')
+  }
+})
 
 app.listen(7777);
