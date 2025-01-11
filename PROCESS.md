@@ -28,3 +28,15 @@ Episode -4
 - Diff Between app.use and app.(methods) 
 - Play Using Dynamic Route 
 - Handle Req.params And Req.query In the Handler 
+
+
+Episode -5 
+
+- What is middlewares and Next ();
+- why middlewares are important (similar logic for more than one req handler)
+- we can write middleware in different context
+- we can warp the middle wares inside the array
+- sendind status code along with response using res.status
+- we can wrape the middleswares inside modules and we can import it 
+- use try and catch for error handlers 
+- we can use error argument also to handle errors inside common handler(/) at last to handle the error but always prefer try and catch
