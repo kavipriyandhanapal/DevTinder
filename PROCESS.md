@@ -40,3 +40,15 @@ Episode -5
 - we can wrape the middleswares inside modules and we can import it 
 - use try and catch for error handlers 
 - we can use error argument also to handle errors inside common handler(/) at last to handle the error but always prefer try and catch
+
+
+Episode - 6 
+- Intsall Mongoose Using npm
+- connect to the with bdb using mongoose anfter that make the express to listen to the port 777
+- create the schema and module using mongoose 
+- create a user data using module instance 
+- create a POST API to save the user instance 
+- save the instance using asyn save method
+- it will create a unique object id and --v 
+- we xan create our object id also 
+- save the code in github

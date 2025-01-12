@@ -1,5 +1,7 @@
 const express = require("express");
 const { AdminMiddleWare, UserMiddleWare } = require("./middlewares/admin");
+const { ConnectDb } = require("./configuration/database");
+const { UserModule } = require("./modules/User");
 
 const app = express();
 
@@ -39,14 +41,13 @@ const app = express();
 
 app.use("/admin", AdminMiddleWare);
 
-app.use("/",(error,res,req)=>{
-  try{
-  throw new error('Sever down')
-  }
-  catch(err){
-    res.send('internal error dont worry')
-  }
-})
+// app.use("/", (error, res, req) => {
+//   try {
+//     throw new error("Sever down");
+//   } catch (err) {
+//     res.send("internal error dont worry");
+//   }
+// });
 
 app.post("/admin/add", (req, res) => {
   res.send("Admin added data Sucessfully");
@@ -56,14 +57,35 @@ app.delete("/admin/delete", (req, res) => {
   res.send("Admin deleted Data Sucessfully");
 });
 
-app.use("/user",UserMiddleWare,(req,res)=>{
-  res.send("user authorized sucessfully ")
+app.use("/user", UserMiddleWare, (req, res) => {
+  res.send("user authorized sucessfully ");
 });
 
-app.use('/',(err,req,res,next)=>{
-  if(err){
-   res.status(501).send('dont worry its an internal Server error')
+app.use("/", (err, req, res, next) => {
+  if (err) {
+    res.status(501).send("dont worry its an internal Server error");
   }
-})
+});
 
-app.listen(7777);
+app.post("/signup", async (req, res) => {
+  const userData = new UserModule({
+    firstName: "kavipriyan",
+    lastName: "Dhanapal",
+    age: 24,
+    gender: "Male",
+  });
+
+  try {
+    await userData.save();
+    res.send("User Saved Sucessfully");
+  } catch (error) {
+    res.status(400).send("Error While Sigup The User");
+  }
+});
+
+ConnectDb()
+  .then(() => {
+    app.listen(7777);
+    console.log("SucessFully Connected To The Db");
+  })
+  .catch((error) => console.log(error, "Connection To the Db Failed"));
