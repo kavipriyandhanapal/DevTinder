@@ -67,19 +67,71 @@ app.use("/", (err, req, res, next) => {
   }
 });
 
+app.use(express.json());
+
 app.post("/signup", async (req, res) => {
-  const userData = new UserModule({
-    firstName: "kavipriyan",
-    lastName: "Dhanapal",
-    age: 24,
-    gender: "Male",
-  });
+  const userData = new UserModule(req.body);
+  console.log(req.body);
 
   try {
     await userData.save();
     res.send("User Saved Sucessfully");
   } catch (error) {
     res.status(400).send("Error While Sigup The User");
+  }
+});
+
+app.get("/feed", async (req, res) => {
+  try {
+    const userDatas = await UserModule.find({});
+    if (userDatas) {
+      res.send(userDatas);
+    } else {
+      res.send("No User Found");
+    }
+  } catch (err) {
+    res.status(400).send("Cant Fetch Feeds");
+  }
+});
+
+app.get("/userbyid", async (req, res) => {
+  const userId = req.body;
+  console.log(userId);
+  try {
+    const userdata = await UserModule.findById(userId.id);
+    if (userdata) {
+      res.send(userdata);
+    } else {
+      res.send("No User Found");
+    }
+  } catch (err) {
+    res.status(400).send("Cant fetch User By The Id");
+  }
+});
+
+app.delete("/delete", async (req, res) => {
+  const userId = req.body.id;
+  try {
+    await UserModule.findByIdAndDelete(userId);
+    res.send("user", userId, "deleted sucessfully");
+  } catch (error) {
+    res.status(400).send("User", userId, "deleted failed");
+  }
+});
+
+app.patch("/update", async (req, res) => {
+  const userId = req.body.id;
+  const body = req.body;
+
+  try {
+    const doc = await UserModule.findByIdAndUpdate(
+      userId,
+       body ,
+       {returnDocument:'before'}
+    );
+    res.send(doc);
+  } catch (error) {
+    res.status(400).send("Failed To Update The Document");
   }
 });
 

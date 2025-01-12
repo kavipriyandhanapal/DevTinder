@@ -44,11 +44,22 @@ Episode -5
 
 Episode - 6 
 - Intsall Mongoose Using npm
-- connect to the with bdb using mongoose anfter that make the express to listen to the port 777
+- connect to the with db using mongoose after that make the express to listen to the port 777
 - create the schema and module using mongoose 
 - create a user data using module instance 
 - create a POST API to save the user instance 
 - save the instance using asyn save method
 - it will create a unique object id and --v 
-- we xan create our object id also 
+- we can create our object id also 
 - save the code in github
+
+
+Episode - 7
+- Need To Pass The Data To store dynamically from the api body
+- Mongoose Will Understand Only The Js object not Json Wjich Are The Formats We Are PAssing From The APi Body
+- Use Express.json method to parse the json to the js object and passing to the module instance to save.
+- Creating pi for User(single document)
+- Creating api for Feed (all documents)
+- Creating api for Fetch By Id
+- create api for deleting the user by id 
+- creating api for update the document 
