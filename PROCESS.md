@@ -97,5 +97,7 @@ Episode - 10
 - Create A middleware for AUTHENTICATION of JWT token 
 - If authenticate means Find The user And Add it To the Request
 - Set Expire Date For Both JWT and Cookies
+- Create Schema Methods For JWT token Genration 
+- Create Schema Methods For Password Comparison Using Bcrypt
 
 

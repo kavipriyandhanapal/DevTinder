@@ -118,15 +118,14 @@ app.post("/login", async (req, res) => {
 
     // Await the result of findOne
     const user = await UserModule.findOne({ email: email });
-    const { _id } = user._id;
-    const cookie = await jwt.sign({ _id }, "DEVTINDERKEY@",{expiresIn:'7d'});
+    const cookie = await user.getjwtToken();
 
     if (user) {
       // Correct order for bcrypt.compare
-      const isUser = await bcrypt.compare(password, user.password);
+      const isUser = await user.comparePassword(password);
 
       if (isUser) {
-        res.cookie("token", cookie,{expires:new Date(Date.now() + 500000)});
+        res.cookie("token", cookie, { expires: new Date(Date.now() + 500000) });
         res.send("Login Successfully");
       } else {
         throw new Error("Invalid credentials");
