@@ -63,3 +63,29 @@ Episode - 7
 - Creating api for Fetch By Id
 - create api for deleting the user by id 
 - creating api for update the document 
+- explore mogoose modules for different modules methods 
+
+
+
+Episode - 8
+- Make a validation to OuR scheams 
+- Requried, unique, validation function, enabling Validiation on Put Req endpoint, Min ,Max
+- Create Validate Funtion for gender
+- put All the validation function requried for our schema 
+- Do API Level validation 
+- Schema validation vs API validation
+- DO API validation ON POST AND PUT
+- Use Validator Lib To Make Our Life Easy
+- Necer trust the Req.bosy From The user 
+- ALWAYS NEED TO SANTIZE OUR CODE 
+
+
+Episode - 9
+- We Need To Validate Our User InComing Datas Before Working With It 
+- We can do validation by using schema level validation or in api but we can do all the validation inside the API function itself so we can use helper functions
+- All the datas from the user need to be validate 
+- And Need to encrpty the use password before storing inside the DB 
+- For encrypt we can use the npm package Called BCRYPT
+- BCRYPT will convert the string password into HASH 
+
+

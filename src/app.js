@@ -2,6 +2,8 @@ const express = require("express");
 const { AdminMiddleWare, UserMiddleWare } = require("./middlewares/admin");
 const { ConnectDb } = require("./configuration/database");
 const { UserModule } = require("./modules/User");
+const { signUpValidation } = require("../utils/signUpValidation");
+const bcrypt = require("bcrypt");
 
 const app = express();
 
@@ -70,14 +72,49 @@ app.use("/", (err, req, res, next) => {
 app.use(express.json());
 
 app.post("/signup", async (req, res) => {
-  const userData = new UserModule(req.body);
-  console.log(req.body);
-
+  const { password, firstName, lastName, email, age, gender } = req.body;
   try {
+    signUpValidation(req);
+
+    const passwordval = await bcrypt.hash(password, 10);
+    const userData = new UserModule({
+      firstName,
+      lastName,
+      email,
+      age,
+      gender,
+      password: passwordval,
+    });
     await userData.save();
     res.send("User Saved Sucessfully");
+  } catch (err) {
+    res.status(400).send("Error" + err);
+  }
+});
+
+app.post("/login", async (req, res) => {
+  const { email, password } = req.body;
+
+  try {
+    console.log(email, password);
+
+    // Await the result of findOne
+    const user = await UserModule.findOne({ email: email });
+
+    if (user) {
+      // Correct order for bcrypt.compare
+      const isUser = await bcrypt.compare(password, user.password);
+
+      if (isUser) {
+        res.send("Login Successfully");
+      } else {
+        throw new Error("Invalid credentials");
+      }
+    } else {
+      throw new Error("Invalid credentials");
+    }
   } catch (error) {
-    res.status(400).send("Error While Sigup The User");
+    res.status(400).send("Error: " + error.message);
   }
 });
 
@@ -119,19 +156,23 @@ app.delete("/delete", async (req, res) => {
   }
 });
 
-app.patch("/update", async (req, res) => {
-  const userId = req.body.id;
+app.patch("/update/:userId", async (req, res) => {
   const body = req.body;
-
+  const userId = req.params.userId;
   try {
-    const doc = await UserModule.findByIdAndUpdate(
-      userId,
-       body ,
-       {returnDocument:'before'}
+    const UPDATE_FEILDS = ["firstName", "lastName", "skills", "gender", "age"];
+    const isValidUpdateFields = Object.keys(body).every((key) =>
+      UPDATE_FEILDS.includes(key)
     );
+    if (!isValidUpdateFields) {
+      throw Error("The Enter Fields Are Not Allowed To Update");
+    }
+    const doc = await UserModule.findByIdAndUpdate(userId, body, {
+      returnDocument: "before",
+    });
     res.send(doc);
   } catch (error) {
-    res.status(400).send("Failed To Update The Document");
+    res.status(400).send("Failed To Update The Document" + error);
   }
 });
 
