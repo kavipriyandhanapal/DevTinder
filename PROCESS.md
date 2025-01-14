@@ -88,4 +88,14 @@ Episode - 9
 - For encrypt we can use the npm package Called BCRYPT
 - BCRYPT will convert the string password into HASH 
 
+Episode - 10
+- Install cokkie parser 
+- Send Dummy cookie During login 
+- create GET profile Api and acess the token with cookie 
+- install jwt Libraray and Create cookie in login method and pass it to postman 
+- pass the cookie to the GET profile method and find the user by the user id 
+- Create A middleware for AUTHENTICATION of JWT token 
+- If authenticate means Find The user And Add it To the Request
+- Set Expire Date For Both JWT and Cookies
+
 

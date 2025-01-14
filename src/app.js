@@ -4,6 +4,9 @@ const { ConnectDb } = require("./configuration/database");
 const { UserModule } = require("./modules/User");
 const { signUpValidation } = require("../utils/signUpValidation");
 const bcrypt = require("bcrypt");
+const cookieparser = require("cookie-parser");
+const jwt = require("jsonwebtoken");
+const { AuthMiddleWare } = require("./middlewares/AuthMiddleWare");
 
 const app = express();
 
@@ -70,6 +73,7 @@ app.use("/", (err, req, res, next) => {
 });
 
 app.use(express.json());
+app.use(cookieparser());
 
 app.post("/signup", async (req, res) => {
   const { password, firstName, lastName, email, age, gender } = req.body;
@@ -92,6 +96,20 @@ app.post("/signup", async (req, res) => {
   }
 });
 
+app.get("/profile", AuthMiddleWare, async (req, res) => {
+  try {
+    const user = req.user;
+
+    if (user) {
+      res.send(user);
+    } else {
+      new Error("USER PROFILE IS NOT FOUND");
+    }
+  } catch (error) {
+    res.send("ERROR PROFILE NOT FOUND");
+  }
+});
+
 app.post("/login", async (req, res) => {
   const { email, password } = req.body;
 
@@ -100,12 +118,15 @@ app.post("/login", async (req, res) => {
 
     // Await the result of findOne
     const user = await UserModule.findOne({ email: email });
+    const { _id } = user._id;
+    const cookie = await jwt.sign({ _id }, "DEVTINDERKEY@",{expiresIn:'7d'});
 
     if (user) {
       // Correct order for bcrypt.compare
       const isUser = await bcrypt.compare(password, user.password);
 
       if (isUser) {
+        res.cookie("token", cookie,{expires:new Date(Date.now() + 500000)});
         res.send("Login Successfully");
       } else {
         throw new Error("Invalid credentials");

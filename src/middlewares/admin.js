@@ -1,6 +1,5 @@
 const AdminMiddleWare = (req, res, next) => {
   const token = "kavi";
-
   if (token === "kavi") {
     next();
   } else {
