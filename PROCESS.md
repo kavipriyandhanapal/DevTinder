@@ -101,3 +101,16 @@ Episode - 10
 - Create Schema Methods For Password Comparison Using Bcrypt
 
 
+
+Episode-11
+
+- We Need to decide what are the APIs and its method we want 
+- Cant Manage inside the App.js Itself So we are grouping based on the similar types and using routes to access
+- We use Express.Router for this and this will work same as app.use (router.use)
+- Create a Router folder and create route for AUTH,PROFILE and Connection
+- Shift the handlers to that folder and ipoer into app.js for inital routing
+- Create a POST hadler for LogOut 
+- Create PATCH handler for edit profile and do validition for the req
+- Create PATCH handler for forgot password and do validition and update the password 
+
+
