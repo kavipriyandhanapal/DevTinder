@@ -29,7 +29,6 @@ authRouter.post("/login", async (req, res) => {
   const { email, password } = req.body;
 
   try {
-
     // Await the result of findOne
     const user = await UserModule.findOne({ email: email });
     const cookie = await user.getjwtToken();
@@ -39,7 +38,9 @@ authRouter.post("/login", async (req, res) => {
       const isUser = await user.comparePassword(password);
 
       if (isUser) {
-        res.cookie("token", cookie, { expires: new Date(Date.now() + 500000) });
+        res.cookie("token", cookie, {
+          expires: new Date(Date.now() + 50000000),
+        });
         res.send("Login Successfully");
       } else {
         throw new Error("Invalid credentials");
@@ -53,9 +54,8 @@ authRouter.post("/login", async (req, res) => {
 });
 
 authRouter.post("/logout", (req, res) => {
-  res.cookie("token", null,  { expires: new Date(Date.now()) });
-  res.send('User Logout Sucessfully')
+  res.cookie("token", null, { expires: new Date(Date.now()) });
+  res.send("User Logout Sucessfully");
 });
-
 
 module.exports = authRouter;

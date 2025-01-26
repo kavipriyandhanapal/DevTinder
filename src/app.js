@@ -2,7 +2,6 @@ const express = require("express");
 const { AdminMiddleWare, UserMiddleWare } = require("./middlewares/admin");
 const { ConnectDb } = require("./configuration/database");
 
-
 const cookieparser = require("cookie-parser");
 const app = express();
 
@@ -62,19 +61,11 @@ const app = express();
 //   res.send("user authorized sucessfully ");
 // });
 
-
-
-
-
 // app.use("/", (err, req, res, next) => {
 //   if (err) {
 //     res.status(501).send("dont worry its an internal Server error");
 //   }
 // });
-
-
-
-
 
 // app.get("/feed", async (req, res) => {
 //   try {
@@ -134,19 +125,18 @@ const app = express();
 //   }
 // });
 
-
-
 app.use(express.json());
 app.use(cookieparser());
 
-
 const authRouter = require("../routes/authRouter");
-const profileRouter = require('../routes/profileRouter')
+const profileRouter = require("../routes/profileRouter");
+const connectionRouter = require("../routes/connectionRouter");
+const userRouter = require("../routes/userRoute");
 
-app.use('/', authRouter)
-app.use('/',profileRouter)
-
-
+app.use("/", authRouter);
+app.use("/", profileRouter);
+app.use("/", connectionRouter);
+app.use("/", userRouter);
 
 ConnectDb()
   .then(() => {
